@@ -1,4 +1,5 @@
-import {createCharacterCard} from "./components/CharacterCard/CharacterCard.js";
+import { createCharacterCard } from "./components/CharacterCard/CharacterCard.js";
+import { createNavButton } from "./components/NavButton/NavButton.js";
 
 const cardContainer = document.querySelector('[data-js="card-container"]');
 const searchBarContainer = document.querySelector(
@@ -16,21 +17,23 @@ const page = 1;
 const searchQuery = "";
 
 async function fetchData() {
-    const response = await fetch("https://rickandmortyapi.com/api/character");
-    const data = await response.json();
-    console.log(data);
-
-    return data.results;
-
+  const response = await fetch("https://rickandmortyapi.com/api/character");
+  const data = await response.json();
+  return data;
 }
 
 async function renderCharacters() {
-    const results = await fetchData();
-
-    results.forEach((result) => {
-        cardContainer.append(createCharacterCard(result));
-    });
+  results.results.forEach((result) => {
+    cardContainer.append(createCharacterCard(result));
+  });
 }
 
-renderCharacters();
+async function renderButton(dataJs, buttonClass, name) {
+  navigation.append(createNavButton(dataJs, buttonClass, name));
+}
 
+const results = await fetchData();
+renderCharacters();
+renderButton("button-prev", "button--prev", "prev");
+
+renderButton("button-next", "button--next", "next");
