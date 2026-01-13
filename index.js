@@ -12,13 +12,14 @@ const nextButton = document.querySelector('[data-js="button-next"]');
 const pagination = document.querySelector('[data-js="pagination"]');
 
 // States
-const maxPage = 1;
-const page = 1;
-const searchQuery = "";
+let maxPage = 1;
+let page = 1;
+let searchQuery = "";
 
 async function fetchData() {
   const response = await fetch("https://rickandmortyapi.com/api/character");
   const data = await response.json();
+
   return data;
 }
 
@@ -34,6 +35,24 @@ async function renderButton(dataJs, buttonClass, name) {
 
 const results = await fetchData();
 renderCharacters();
+/*
 renderButton("button-prev", "button--prev", "prev");
 
 renderButton("button-next", "button--next", "next");
+*/
+
+const prevButton = createNavButton("button-prev", "button--prev", "prev");
+const nextButton = createNavButton("button-next", "button--next", "next");
+
+navigation.append(prevButton);
+navigation.append(nextButton);
+
+prevButton.addEventListener("click", () => {
+  page = page > 1 ? page - 1 : 1;
+  fetchCharacters();
+});
+
+nextButton.addEventListener("click", () => {
+  page = page < maxPage ? page + 1 : maxPage;
+  fetchCharacters();
+});
