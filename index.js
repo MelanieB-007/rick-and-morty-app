@@ -1,11 +1,11 @@
 import {createCharacterCard} from "./components/CharacterCard/CharacterCard.js";
 import {createNavButton} from "./components/NavButton/NavButton.js";
 import {createNavPagination} from "./components/NavPagination/NavPagination.js";
-import { createSearchBar } from "./components/SearchBar/SearchBar.js";
+import {createSearchbar} from "./components/SearchBar/SearchBar.js";
+
 
 const cardContainer = document.querySelector('[data-js="card-container"]');
 const searchBarContainer = document.querySelector('[data-js="search-bar-container"]');
-const searchBar = document.querySelector('[data-js="search-bar"]');
 const navigation = document.querySelector('[data-js="navigation"]');
 
 
@@ -18,12 +18,11 @@ let prevButton;
 let nextButton;
 let pagination;
 let searchQuery = "";
-const url = `https://rickandmortyapi.com/api/character?page=${page}`;
+let url = `https://rickandmortyapi.com/api/character?page=${page}`;
 
 initNavigation();
+initSearchbar();
 fetchCharacters(url);
-
-//let searchQuery = "";
 
 function initNavigation(){
     prevButton = createNavButton("previous", "button--prev", "button-prev");
@@ -36,6 +35,11 @@ function initNavigation(){
     navigation.append(prevButton, pagination, nextButton);
 }
 
+function initSearchbar(){
+    const searchbar = createSearchbar();
+    searchbar.addEventListener("submit", handleSearchbar);
+    searchBarContainer.append(searchbar);
+}
 
 function getPageFromUrl(urlString){
     const url = new URL(urlString);
@@ -84,20 +88,11 @@ function handleNextButton(){
     }
 }
 
-// Ich baue eine SearchBar. Und WENN dort gesucht wird, dann führe diese Funktion aus. Dabei ist "query" = onSubmit CallbackFunktion in der SearchBar JS
-const searchBar = createSearchBar((query) => {
-    searchQuery = query;
+function handleSearchbar(event){
+    event.preventDefault();
+    const input = event.target.querySelector("input");
+    searchQuery = input.value;
     page = 1;
-    renderCharacters();
-});
-
-searchBarContainer.append(searchBar);
-/*
-searchBar.addEventListener("submit", (event) => {
-  event.preventDefault(); // nein, Seite nicht neu laden, mein JS-State soll bleiben.
-  const input = searchBar.querySelector("input"); // Hole mir das Input aus der SearchBar,
-  searchQuery = input.value; // Nimm den Text, den der User eingegeben hat und speicher ihn im State
-  page = 1; // eine neue Seite soll immer auf Seite 1 starten
-  renderCharacters(); // muss drinnen steht, läuft nur wenn User sucht.
-});
-*/
+    url = `https://rickandmortyapi.com/api/character?page=${page}&name=${encodeURIComponent(searchQuery)}`;
+    fetchCharacters(url);
+}
