@@ -6,8 +6,8 @@ const nextButton = document.querySelector('[data-js="button-next"]');
 
 /*
 export function createNavButton(dataJs, buttonClass, name) {
-  const button = document.createElement("button");
-  button.innerHTML = `<button class="button ${buttonClass}" data-js="${dataJs}">
+  const button = document.createElement("navigation");
+  navigation.innerHTML = `<button class="button ${buttonClass}" data-js="${dataJs}">
         ${name}
       </button>`; // doppelter button?!
   return button;
