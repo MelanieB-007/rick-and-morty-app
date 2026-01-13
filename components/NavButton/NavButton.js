@@ -3,7 +3,7 @@ export function createNavButton(buttonText, buttonClass, dataJS) {
     const classList = ["button", buttonClass];
     button.classList.add(...classList);
     button.dataset.js = dataJS;
-    button.innerHTML = buttonText;
+    button.textContent = buttonText;
 
     return button;
 }

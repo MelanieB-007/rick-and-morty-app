@@ -6,27 +6,43 @@ const cardContainer = document.querySelector('[data-js="card-container"]');
 //const searchBarContainer = document.querySelector('[data-js="search-bar-container"]');
 //const searchBar = document.querySelector('[data-js="search-bar"]');
 const navigation = document.querySelector('[data-js="navigation"]');
-const prevButton = document.querySelector('[data-js="button-prev"]');
-const nextButton = document.querySelector('[data-js="button-next"]');
-const pagination = document.querySelector('[data-js="pagination"]');
+let prevButton = document.querySelector('[data-js="button-prev"]');
+let nextButton = document.querySelector('[data-js="button-next"]');
+let pagination = document.querySelector('[data-js="pagination"]');
 
 // States
 let page = 1;
+let maxPage = 1;
+let nextUrl = null;
+let prevUrl = null;
+const url = `https://rickandmortyapi.com/api/character?page=${page}`;
+
 //let searchQuery = "";
 
-async function fetchCharacters() {
-    const url = `https://rickandmortyapi.com/api/character?page=${page}`;
+function initNavigation(){
+    prevButton = createNavButton("previous", "button--prev", "button-prev");
+    pagination = createNavPagination("pagination", page, maxPage);
+    nextButton = createNavButton("next", "button--next", "button-next");
 
+    prevButton.addEventListener('click', handlePrevButton);
+    nextButton.addEventListener('click', handleNextButton);
+
+    navigation.append(prevButton, pagination, nextButton);
+}
+
+async function fetchCharacters(url) {
     const response = await fetch(url);
     const data = await response.json();
 
+    nextUrl = data.info.next;
+    prevUrl = data.info.prev;
+    maxPage = data.info.pages;
     cardContainer.innerHTML = '';
 
     renderCharacters(data.results);
-    renderPagination(data.info);
+    renderPagination();
 
     return data;
-
 }
 
 
@@ -36,15 +52,23 @@ async function renderCharacters(results) {
     });
 }
 
-async function renderPagination(info){
-    const prevButton = createNavButton("previous", "button--prev", "button-prev");
-    navigation.append(prevButton);
-
-    const pagination = createNavPagination("pagination", page, info.pages);
-    navigation.append(pagination);
-
-    const nextButton = createNavButton("next", "button--next", "button-next");
-    navigation.append(nextButton);
+async function renderPagination(){
+    pagination.textContent = `${page}/${maxPage}`;
+    prevButton.disabled = !prevUrl;
+    nextButton.disabled = !nextUrl;
 }
 
-fetchCharacters();
+function handlePrevButton(){
+    if(prevUrl){
+        fetchCharacters(prevUrl);
+    }
+}
+
+function handleNextButton(){
+    if(nextUrl){
+        fetchCharacters(nextUrl);
+    }
+}
+
+initNavigation();
+fetchCharacters(url);
