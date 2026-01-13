@@ -1,52 +1,94 @@
-import { createCharacterCard } from "./components/CharacterCard/CharacterCard.js";
+import {createCharacterCard} from "./components/CharacterCard/CharacterCard.js";
+import {createNavButton} from "./components/NavButton/NavButton.js";
+import {createNavPagination} from "./components/NavPagination/NavPagination.js";
 import { createSearchBar } from "./components/SearchBar/SearchBar.js";
 
 const cardContainer = document.querySelector('[data-js="card-container"]');
+const searchBarContainer = document.querySelector('[data-js="search-bar-container"]');
+const searchBar = document.querySelector('[data-js="search-bar"]');
 const navigation = document.querySelector('[data-js="navigation"]');
-const prevButton = document.querySelector('[data-js="button-prev"]');
-const nextButton = document.querySelector('[data-js="button-next"]');
-const pagination = document.querySelector('[data-js="pagination"]');
-const searchBarContainer = document.querySelector(
-  '[data-js="search-bar-container"]'
-);
+
 
 // States
-let maxPage = 1;
 let page = 1;
+let maxPage = 1;
+let nextUrl = null;
+let prevUrl = null;
+let prevButton;
+let nextButton;
+let pagination;
 let searchQuery = "";
+const url = `https://rickandmortyapi.com/api/character?page=${page}`;
 
-/*
-const state {
-page: 1;
-searchQuery: "";
-maxPage: 1;
-}
-*/
+initNavigation();
+fetchCharacters(url);
 
-async function fetchData() {
-  const url = `https://rickandmortyapi.com/api/character?page=${page}&name=${searchQuery}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  console.log(data);
-  // maxPage = data.info.pages; // State wird hier aktualisiert = Für die aktuelle Suche gibt es X-Seiten, wenn ich neu fetche, wird es neu gesetzt
-  cardContainer.innerHTML = ""; // Löscht alte Karten aus dem DOM, zeigt mir die gesuchten Karten an
+//let searchQuery = "";
 
-  return data.results;
+function initNavigation(){
+    prevButton = createNavButton("previous", "button--prev", "button-prev");
+    pagination = createNavPagination();
+    nextButton = createNavButton("next", "button--next", "button-next");
+
+    prevButton.addEventListener('click', handlePrevButton);
+    nextButton.addEventListener('click', handleNextButton);
+
+    navigation.append(prevButton, pagination, nextButton);
 }
 
-async function renderCharacters() {
-  const results = await fetchData();
 
-  results.forEach((result) => {
-    cardContainer.append(createCharacterCard(result));
-  });
+function getPageFromUrl(urlString){
+    const url = new URL(urlString);
+    return parseInt(url.searchParams.get('page')) || 1;
+}
+
+async function fetchCharacters(url) {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    setStates(url, data.info);
+    renderCharacters(data.results);
+    renderPagination();
+}
+
+async function setStates(url, info){
+    page = getPageFromUrl(url);
+    nextUrl = info.next;
+    prevUrl = info.prev;
+    maxPage = info.pages;
+}
+
+async function renderCharacters(results) {
+    cardContainer.innerHTML = '';
+
+    results.forEach((result) => {
+        cardContainer.append(createCharacterCard(result));
+    });
+}
+
+function renderPagination(){
+    pagination.textContent = `${page}/${maxPage}`;
+    prevButton.disabled = !prevUrl;
+    nextButton.disabled = !nextUrl;
+}
+
+function handlePrevButton(){
+    if(prevUrl){
+        fetchCharacters(prevUrl);
+    }
+}
+
+function handleNextButton(){
+    if(nextUrl){
+        fetchCharacters(nextUrl);
+    }
 }
 
 // Ich baue eine SearchBar. Und WENN dort gesucht wird, dann führe diese Funktion aus. Dabei ist "query" = onSubmit CallbackFunktion in der SearchBar JS
 const searchBar = createSearchBar((query) => {
-  searchQuery = query;
-  page = 1;
-  renderCharacters();
+    searchQuery = query;
+    page = 1;
+    renderCharacters();
 });
 
 searchBarContainer.append(searchBar);
@@ -59,5 +101,3 @@ searchBar.addEventListener("submit", (event) => {
   renderCharacters(); // muss drinnen steht, läuft nur wenn User sucht.
 });
 */
-
-renderCharacters();
