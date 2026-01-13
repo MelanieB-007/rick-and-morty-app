@@ -1,7 +1,6 @@
 export function createNavButton(buttonText, buttonClass, dataJS) {
     const button = document.createElement("button");
-    const classList = ["button", buttonClass];
-    button.classList.add(...classList);
+    button.className = `button ${buttonClass}`;
     button.dataset.js = dataJS;
     button.textContent = buttonText;
 

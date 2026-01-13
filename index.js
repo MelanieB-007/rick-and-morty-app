@@ -7,16 +7,20 @@ const cardContainer = document.querySelector('[data-js="card-container"]');
 //const searchBarContainer = document.querySelector('[data-js="search-bar-container"]');
 //const searchBar = document.querySelector('[data-js="search-bar"]');
 const navigation = document.querySelector('[data-js="navigation"]');
-let prevButton = document.querySelector('[data-js="button-prev"]');
-let nextButton = document.querySelector('[data-js="button-next"]');
-let pagination = document.querySelector('[data-js="pagination"]');
+
 
 // States
 let page = 1;
 let maxPage = 1;
 let nextUrl = null;
 let prevUrl = null;
+let prevButton;
+let nextButton;
+let pagination;
 const url = `https://rickandmortyapi.com/api/character?page=${page}`;
+
+initNavigation();
+fetchCharacters(url);
 
 //let searchQuery = "";
 
@@ -31,6 +35,7 @@ function initNavigation(){
     navigation.append(prevButton, pagination, nextButton);
 }
 
+
 function getPageFromUrl(urlString){
     const url = new URL(urlString);
     return parseInt(url.searchParams.get('page')) || 1;
@@ -40,26 +45,27 @@ async function fetchCharacters(url) {
     const response = await fetch(url);
     const data = await response.json();
 
-    page = getPageFromUrl(url);
-    nextUrl = data.info.next;
-    prevUrl = data.info.prev;
-    maxPage = data.info.pages;
-    cardContainer.innerHTML = '';
-
+    setStates(url, data.info);
     renderCharacters(data.results);
     renderPagination();
-
-    return data;
 }
 
+async function setStates(url, info){
+    page = getPageFromUrl(url);
+    nextUrl = info.next;
+    prevUrl = info.prev;
+    maxPage = info.pages;
+}
 
 async function renderCharacters(results) {
+    cardContainer.innerHTML = '';
+
     results.forEach((result) => {
         cardContainer.append(createCharacterCard(result));
     });
 }
 
-async function renderPagination(){
+function renderPagination(){
     pagination.textContent = `${page}/${maxPage}`;
     prevButton.disabled = !prevUrl;
     nextButton.disabled = !nextUrl;
@@ -77,5 +83,4 @@ function handleNextButton(){
     }
 }
 
-initNavigation();
-fetchCharacters(url);
+
