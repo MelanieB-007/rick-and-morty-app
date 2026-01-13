@@ -2,6 +2,7 @@ import {createCharacterCard} from "./components/CharacterCard/CharacterCard.js";
 import {createNavButton} from "./components/NavButton/NavButton.js";
 import {createNavPagination} from "./components/NavPagination/NavPagination.js";
 
+
 const cardContainer = document.querySelector('[data-js="card-container"]');
 //const searchBarContainer = document.querySelector('[data-js="search-bar-container"]');
 //const searchBar = document.querySelector('[data-js="search-bar"]');
@@ -21,7 +22,7 @@ const url = `https://rickandmortyapi.com/api/character?page=${page}`;
 
 function initNavigation(){
     prevButton = createNavButton("previous", "button--prev", "button-prev");
-    pagination = createNavPagination("pagination", page, maxPage);
+    pagination = createNavPagination();
     nextButton = createNavButton("next", "button--next", "button-next");
 
     prevButton.addEventListener('click', handlePrevButton);
@@ -30,10 +31,16 @@ function initNavigation(){
     navigation.append(prevButton, pagination, nextButton);
 }
 
+function getPageFromUrl(urlString){
+    const url = new URL(urlString);
+    return parseInt(url.searchParams.get('page')) || 1;
+}
+
 async function fetchCharacters(url) {
     const response = await fetch(url);
     const data = await response.json();
 
+    page = getPageFromUrl(url);
     nextUrl = data.info.next;
     prevUrl = data.info.prev;
     maxPage = data.info.pages;

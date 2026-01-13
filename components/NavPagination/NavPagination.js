@@ -1,9 +1,7 @@
-export function createNavPagination(dataJS, currentPage, maxPage) {
+export function createNavPagination() {
     const spanPagination = document.createElement("span");
-    const classList = ["navigation__pagination"];
-    spanPagination.classList.add(...classList);
-    spanPagination.dataset.js = dataJS;
-    spanPagination.innerHTML = `${currentPage}/${maxPage}`;
+    spanPagination.className = "navigation__pagination";
+    spanPagination.dataset.js = "pagination";
 
     return spanPagination;
 }
