@@ -36,7 +36,7 @@ We will fetch all character information from a REST API specifically designed fo
 
 ## Tasks
 
-### 1. Fetch Data from API
+### 1. Fetch Data from API  ✅
 
 Let's start by fetching character data from the API, which we will later use to generate character cards dynamically.
 
@@ -45,7 +45,7 @@ Let's start by fetching character data from the API, which we will later use to 
 - Inside the `fetchCharacters` function, log the fetched data to the console.
 - Call `fetchCharacters` and check the console of your browser to ensure the data is being fetched correctly.
 
-### 2. Character Card Component
+### 2. Character Card Component ✅
 
 Currently, the HTML contains a hardcoded character card for Rick Sanchez. Instead of hardcoding it, we'll create the card dynamically using JavaScript.
 
@@ -55,7 +55,7 @@ Currently, the HTML contains a hardcoded character card for Rick Sanchez. Instea
 - Inside `index.js`, call the `createCharacterCard` function and append its return value to the existing `cardContainer`.
 - Once implemented, the Rick Sanchez card should no longer be hardcoded in `index.html` but instead be created dynamically using JavaScript.
 
-### 3. Make the Character Card Component Dynamic
+### 3. Make the Character Card Component Dynamic ✅
 
 Right now, the `CharacterCard` function always returns the character Rick Sanchez. We need to update it so that it can generate cards for any character.
 
@@ -71,7 +71,7 @@ Right now, the `CharacterCard` function always returns the character Rick Sanche
 - Make sure the `cardContainer` is emptied every time new characters are fetched (HINT: you can use `innerHTML = ''` for that).
 - Once implemented, your app should display 20 character cards dynamically.
 
-### 4. Pagination
+### 4. Pagination ✅
 
 Great Job! But we want to see not only 20 characters, we want all of them! So lets implement the pagination.
 
@@ -84,7 +84,7 @@ Great Job! But we want to see not only 20 characters, we want all of them! So le
   - the `fetchCharacters` function is called.
 - Update the pagination display each time characters are fetched to show the current page and the current max page.
 
-### 5. The Search Bar
+### 5. The Search Bar ✅
 
 Now we want even more functionality in our app. We want to find individual characters by typing their name into the search bar.
 
@@ -101,7 +101,7 @@ Now we want even more functionality in our app. We want to find individual chara
 
 ## Bonus
 
-### 6. Refactoring your Code
+### 6. Refactoring your Code ✅
 
 You've done it: your app is working as expected. 🚀✨
 
@@ -120,7 +120,7 @@ However, we want to tidy up our code so that not everything is written in a sing
 - Append the created components at the right places in your HTML. All container elements are already
   available in the `index.js`.
 
-### 7. Style Your Project
+### 7. Style Your Project (Ramon)
 
 Congratulations on getting your project up and running! Now, let's take it to the next level by adding some flair and personality through styling. The bonus feature focuses on enhancing the visual appeal of your page with creative design elements. Follow these steps to give your project that extra touch:
 
