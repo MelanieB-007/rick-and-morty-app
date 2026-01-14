@@ -30,6 +30,7 @@ body {
   max-width: 1500px;
   padding: 40px;
   margin: auto;
+  position: relative;
 }
 
 header {
@@ -60,6 +61,17 @@ main {
   }
   .title {
     font-size: 32px;
+  }
+  .mobile-search__button {
+    display: none;
+  }
+  .search-bar-container {
+    position: relative;
+    width: auto;
+    left: 0;
+  }
+  .search-bar {
+    border-radius: 10px;
   }
 }
 @media (min-width: 1020px) {
