@@ -17,7 +17,8 @@
 .search-bar__input {
   background-color: transparent;
   border: none;
-  color: #fff;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important; /* Für Autofill-Fälle in Chrome */
 }
 
 .search-bar__button {
