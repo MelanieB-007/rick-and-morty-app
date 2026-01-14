@@ -35,6 +35,7 @@ body {
 
 header {
   background-color: var(--color-secondary);
+  overflow: hidden;
 }
 
 .title {
