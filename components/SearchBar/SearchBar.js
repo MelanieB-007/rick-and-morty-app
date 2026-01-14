@@ -20,3 +20,17 @@ export function createSearchbar(){
 
     return formSearchbar;
 }
+
+export function createMobileSearchButton () {
+    const mobileSearchButton = document.createElement("button");
+    mobileSearchButton.className = "search-bar__button mobile-search__button";
+    mobileSearchButton.dataset.js = "mobile-search-button";
+
+    mobileSearchButton.innerHTML = `<img
+        class="search-bar__icon"
+        src="./assets/magnifying-glass.png"
+        alt=""
+    />`;
+
+    return mobileSearchButton;
+}
