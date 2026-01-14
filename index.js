@@ -1,16 +1,12 @@
-import { createCharacterCard } from "./components/CharacterCard/CharacterCard.js";
-import { createNavButton } from "./components/NavButton/NavButton.js";
-import { createNavPagination } from "./components/NavPagination/NavPagination.js";
-import { createSearchbar } from "./components/SearchBar/SearchBar.js";
+import {createCharacterCard} from "./components/CharacterCard/CharacterCard.js";
+import {createNavButton} from "./components/NavButton/NavButton.js";
+import {createNavPagination} from "./components/NavPagination/NavPagination.js";
+import {createMobileSearchButton, createSearchbar} from "./components/SearchBar/SearchBar.js";
 
 const cardContainer = document.querySelector('[data-js="card-container"]');
-const searchBarContainer = document.querySelector(
-  '[data-js="search-bar-container"]'
-);
+const searchBarContainer = document.querySelector('[data-js="search-bar-container"]');
+const mobileSearchBarContainer = document.querySelector('[data-js="mobile-search-button-container"]');
 const navigation = document.querySelector('[data-js="navigation"]');
-const mobileSearchButton = document.querySelector(
-  '[data-js="mobile-search-button"]'
-);
 
 // States
 let page = 1;
@@ -38,15 +34,16 @@ function initNavigation() {
   navigation.append(prevButton, pagination, nextButton);
 }
 
-function initSearchbar() {
-  const searchbar = createSearchbar();
-  searchbar.addEventListener("submit", handleSearchbar);
-  searchBarContainer.append(searchbar);
-}
+function initSearchbar(){
+    const searchbar = createSearchbar();
+    searchbar.addEventListener("submit", handleSearchbar);
+    searchBarContainer.append(searchbar);
 
-function getPageFromUrl(urlString) {
-  const url = new URL(urlString);
-  return parseInt(url.searchParams.get("page")) || 1;
+    const mobileSearchButton = createMobileSearchButton();
+    mobileSearchButton.addEventListener("click", () => {
+        searchBarContainer.classList.add("visible");
+    });
+    mobileSearchBarContainer.append(mobileSearchButton);
 }
 
 async function fetchCharacters(url) {
@@ -112,6 +109,7 @@ function handleSearchbar(event) {
   fetchCharacters(url);
 }
 
-mobileSearchButton.addEventListener("click", () => {
-  searchBarContainer.classList.add("visible");
-});
+function getPageFromUrl(urlString){
+    const url = new URL(urlString);
+    return parseInt(url.searchParams.get('page')) || 1;
+}
