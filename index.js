@@ -7,6 +7,9 @@ import {createSearchbar} from "./components/SearchBar/SearchBar.js";
 const cardContainer = document.querySelector('[data-js="card-container"]');
 const searchBarContainer = document.querySelector('[data-js="search-bar-container"]');
 const navigation = document.querySelector('[data-js="navigation"]');
+const mobileSearchButton = document.querySelector(
+  '[data-js="mobile-search-button"]'
+);
 
 
 // States
@@ -96,3 +99,7 @@ function handleSearchbar(event){
     url = `https://rickandmortyapi.com/api/character?page=${page}&name=${encodeURIComponent(searchQuery)}`;
     fetchCharacters(url);
 }
+
+mobileSearchButton.addEventListener("click", () => {
+  searchBarContainer.classList.add("visible");
+});
