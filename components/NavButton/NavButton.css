@@ -16,12 +16,3 @@
   background-color: var(--color-button-hover);
   top: -3px;
 }
-
-/* .button.hidden {
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
-  cursor: default;
-}
-.button.hidden:hover {
-  top: 0;
-} */
